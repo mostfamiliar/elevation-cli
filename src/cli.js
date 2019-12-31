@@ -1,8 +1,7 @@
 import minimist from 'minimist';
-// import { now } from './now';
-// import { forecast } from './forecast';
-// import { help } from './help';
-// import { configure } from './configure';
+import { fetch } from './fetch';
+import { help } from './help';
+import { configure } from './configure';
 import { version } from './version';
 
 export async function cli(argsArray) {
@@ -22,21 +21,17 @@ export async function cli(argsArray) {
       version(args);
       break;
 
-    // case 'help':
-    //   help(args);
-    //   break;
-    //
-    // case 'now':
-    //   now(args);
-    //   break;
-    //
-    // case 'forecast':
-    //   forecast(args);
-    //   break;
-    //
-    // case 'config':
-    //   configure(args);
-    //   break;
+    case 'help':
+      help(args);
+      break;
+
+    case 'fetch':
+      fetch(args);
+      break;
+
+    case 'config':
+      configure(args);
+      break;
 
     default:
       console.error(`"${cmd}" is not a valid command!`);

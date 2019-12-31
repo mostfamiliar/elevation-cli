@@ -13,7 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/geojson-coords": "0.0.0",
+    "chalk": "^3.0.0",
+    "conf": "^6.2.0",
     "esm": "^3.2.25",
-    "minimist": "^1.2.0"
+    "flatten": "^1.0.3",
+    "fs": "0.0.1-security",
+    "minimist": "^1.2.0",
+    "node-fetch": "^2.6.0",
+    "ora": "^4.0.3"
   }
 }
