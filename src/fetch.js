@@ -56,5 +56,7 @@ export async function fetch(args) {
     });
   });
 
-  return geoJSON;
+
+  fs.writeFileSync(fileName + '_elev', JSON.stringify(geoJSON));
+  console.log("Success")
 }
