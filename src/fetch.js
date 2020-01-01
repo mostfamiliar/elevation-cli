@@ -35,16 +35,19 @@ export async function fetch(args) {
   //TODO Add rate limiting
 
   let spinner = ora()
+  // Call API for each coordinate pair - cannot be done in batch
   for (let coordinatePair of coordinates) {
-    spinner.start();
+    spinner.start('Querying API');
     let data = await queryTerrainVectorTileset(coordinatePair[0], coordinatePair[1], apiKey);
+    // Grab feature with elevation
     let element = await data.features.find( (feature) => feature.properties.tilequery.layer === 'contour' )
     if (element != undefined) {
       responseArr.push(element);
     }
   }
-  spinner.stop();
 
+  spinner.info('Generating new file')
+  // Find coordinate match, add elevation to original geoJSON array
   responseArr.map((feature1) => {
     geoJSON.features = geoJSON.features.map((feature2,index2) => {
       if(feature1.geometry.coordinates.toString() === feature2.geometry.coordinates.toString()){
@@ -56,7 +59,8 @@ export async function fetch(args) {
     });
   });
 
-
-  fs.writeFileSync(fileName + '_elev', JSON.stringify(geoJSON));
-  console.log("Success")
+  // Export file
+  const fileNameWithoutExt = fileName.split('.geojson');
+  fs.writeFileSync(fileNameWithoutExt[0] + '_elev.geojson', JSON.stringify(geoJSON));
+  spinner.succeed("Success");
 }
