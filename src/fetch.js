@@ -14,7 +14,7 @@ export async function fetch(args) {
   // Import file and parse coordinates
   const fileName = args._[1]
   let item = fs.readFileSync(fileName,{ encoding: 'utf8' });
-  let geoJSON = JSON.parse(item);
+  let geoJSON = await JSON.parse(item);
   let coordinates = geojsonCoords(geoJSON);
   let responseArr = [];
 
@@ -38,26 +38,23 @@ export async function fetch(args) {
   for (let coordinatePair of coordinates) {
     spinner.start();
     let data = await queryTerrainVectorTileset(coordinatePair[0], coordinatePair[1], apiKey);
-    let ele = await data.features.filter( (feature) => feature.properties.tilequery.layer === 'contour')
-    responseArr.push(ele[0]);
+    let element = await data.features.find( (feature) => feature.properties.tilequery.layer === 'contour' )
+    if (element != undefined) {
+      responseArr.push(element);
+    }
   }
   spinner.stop();
 
-  for(let feature of responseArr){
-    for(let feature2 of geoJSON.features) {
-      if(feature2.geometry.type === 'LineString'){
-        for(let coordinate of feature2.geometry.coordinates){
-          if(coordinate === feature.geometry.coordinates){
-            console.log("hi")
-          }
+  responseArr.map((feature1) => {
+    geoJSON.features = geoJSON.features.map((feature2,index2) => {
+      if(feature1.geometry.coordinates.toString() === feature2.geometry.coordinates.toString()){
+        if(feature2.geometry.type === 'Point'){
+        feature2.properties.ele = feature1.properties.ele;
         }
       }
-    }
-  }
-}
+        return feature2;
+    });
+  });
 
-function compareArrays(arr1, arr2) {
-  // arr1.forEach((f1) => arr2.forEach(f2=>{
-  //   if(f1.features)
-  // });
+  return geoJSON;
 }
