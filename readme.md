@@ -1,6 +1,6 @@
 ## Add elevation to geojson points using the Mapbox tilequery API.
 
-### Import .geojson file with lat/lng coordinates, export .geojson with coordinates
+### Import .geojson file with lat/lng coordinates, export .geojson with elevation
 
 ## Requirements
   * Active Mapbox API key
