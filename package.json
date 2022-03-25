@@ -19,7 +19,7 @@
     "esm": "^3.2.25",
     "flatten": "^1.0.3",
     "fs": "0.0.1-security",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.6",
     "node-fetch": "^2.6.0",
     "ora": "^4.0.3"
   }
